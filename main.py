@@ -6,11 +6,12 @@ import argparse
 from google.genai import types
 
 def main():
-    print("Hello from ai-agent!")
+    #print("Hello from ai-agent!")
     # begin code
     # parser object
     parser = argparse.ArgumentParser(description="Chat bot")
     parser.add_argument("prompt", type=str, help="prompt give genAI  a string")
+    parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
     # get arguments
     args = parser.parse_args()
 
@@ -31,9 +32,13 @@ def main():
     if response.usage_metadata is None:
         raise RuntimeError("metadata not found")
     
-    print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-    print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-    print(response.text)
+    if args.verbose:
+        print(f"User prompt: {args.prompt}")
+        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+        print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+        print(response.text)
+    else:
+        print(response.text)
 
 
 if __name__ == "__main__":
