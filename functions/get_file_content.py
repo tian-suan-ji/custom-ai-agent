@@ -1,6 +1,9 @@
 
-import os
 
+import os
+import sys
+sys.path.append('..')
+from config import MAX_CHARACTERS
 
 def get_file_content(working_directory: str, file_path: str) -> str:
     working_directory_absolute = os.path.abspath(working_directory)
@@ -17,7 +20,7 @@ def get_file_content(working_directory: str, file_path: str) -> str:
     
     # read file
     with open(target_file, 'r', encoding="UTF-8") as f:
-        content = f.read()
+        content = f.read(MAX_CHARACTERS)
         print(content)
 
-
+get_file_content("../calculator", "main.py")
