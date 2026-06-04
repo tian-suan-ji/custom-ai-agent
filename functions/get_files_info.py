@@ -2,20 +2,18 @@
 import os
 
 def get_files_info(working_directory: str, directory: str = ".") -> str:
-    
     try:
-        if not os.path.isdir(directory):
-            return f"\"{directory}\" is not a directory"
-
         working_directory_absolute = os.path.abspath(working_directory)
-        
         full_directory = os.path.join(working_directory_absolute, directory)
+        
+        if not os.path.isdir(full_directory):
+            return f"\"{directory}\" is not a directory"
         
         target_directory = os.path.normpath(full_directory)
         
         # prepare to print resulsts of the directory
         print(f"Result for \"{directory}\" directorry:")
-
+        
         valid_common_directory = os.path.commonpath([working_directory_absolute, target_directory])
         if valid_common_directory != working_directory_absolute:
             return f"Error: Cannot list \"{directory}\" as it is outside the permitted working directory"
