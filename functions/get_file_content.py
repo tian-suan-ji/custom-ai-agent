@@ -15,3 +15,9 @@ def get_file_content(working_directory: str, file_path: str) -> str:
     if valid_common_directory != working_directory_absolute:
         return f"Error: File not found or is not a regular file {file_path}"
     
+    # read file
+    with open(target_file, 'r', encoding="UTF-8") as f:
+        content = f.read()
+        print(content)
+
+
