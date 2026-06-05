@@ -2,7 +2,7 @@
 import os
 
 
-def write_to_file(working_directory: str, file_path: str, content) -> None -> str:
+def write_to_file(working_directory: str, file_path: str, content: str) -> str:
     working_directory_absolute = os.path.abspath(working_directory)
     absolute_file_path = os.path.join(working_directory_absolute, file_path)
 
@@ -24,3 +24,8 @@ def write_to_file(working_directory: str, file_path: str, content) -> None -> st
     if common_path != working_directory_absolute:
         return f"Error: File not found or is not a regular file {file_path}"
     
+    # write to file
+    with open(target_file_path, 'w', encoding="UTF-8") as f:
+        new_content = f.write(content)
+        
+    return f"Successfully wrote to \"{file_path}\" {len(new_content)} characters written"
