@@ -22,10 +22,6 @@ def get_file_content(working_directory: str, file_path: str) -> str:
             extra_content = f.read(10_001)
             if extra_content[-1] != '':
                 content += f"[...File \"{file_path}\" truncated at 10_000 characters]"
-            print(content)
+            return content
     except Exception as e:
         return f"Error: {e}"
-
-
-get_file_content("../calculator", "main.py")
-
