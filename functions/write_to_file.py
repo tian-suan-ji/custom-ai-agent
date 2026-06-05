@@ -15,7 +15,12 @@ def write_to_file(working_directory: str, file_path: str, content) -> None -> st
     if os.path.isdir(target_file_path):
         return f"Error: Cannot write to \"{file_path}\" as as it is a directory"
     
+    # create any missing parent directories
     os.makedirs(target_file_path, exist_ok=True)
+    
     # common absolute path
     common_path = os.path.commonpath([working_directory_absolute, target_file_path])
+
+    if common_path != working_directory_absolute:
+        return f"Error: File not found or is not a regular file {file_path}"
     
