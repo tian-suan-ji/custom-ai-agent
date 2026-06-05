@@ -19,8 +19,8 @@ def get_file_content(working_directory: str, file_path: str) -> str:
         # read file
         with open(target_file, 'r', encoding="UTF-8") as f:
             content = f.read(10_000)
-            extra_content = f.read(10_001)
-            if extra_content[-1] != '':
+            
+            if f.read(1) != '':
                 content += f"[...File \"{file_path}\" truncated at 10_000 characters]"
             return content
     except Exception as e:
