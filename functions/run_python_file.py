@@ -16,3 +16,7 @@ def run_python_file(working_directory: str, file_path: str, args: list[str] | No
     # validate file on disc
     if not os.path.isfile(target_file_path):
         return f"Error: \"{file_path}\" does not exist or is not a regular file"
+    
+    # is file extension python
+    if not file_path.endswith("py"):
+        return f"Error: \"{file_path}\" is not a Python file"
