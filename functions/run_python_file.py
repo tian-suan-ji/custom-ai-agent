@@ -10,3 +10,9 @@ def run_python_file(working_directory: str, file_path: str, args: list[str] | No
     if not os.path.isdir(file_path_absolute):
         return f"Error: Cannot execute \"{file_path}\" as it is outside the permitted working directory"
     
+    # normalize file path
+    target_file_path = os.path.normpath(file_path_absolute)
+    
+    # validate file on disc
+    if not os.path.isfile(target_file_path):
+        return f"Error: \"{file_path}\" does not exist or is not a regular file"
