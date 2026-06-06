@@ -7,7 +7,7 @@ def get_file_content(working_directory: str, file_path: str) -> str:
         working_directory_absolute = os.path.abspath(working_directory)
         full_file_path = os.path.join(working_directory_absolute, file_path)
         
-        if os.path.isdir(full_file_path):
+        if not os.path.isdir(full_file_path):
             return f"Errorr: Cannot read \"{file_path}\" as it is outside the permitted directory"
         
         target_file = os.path.normpath(full_file_path)
