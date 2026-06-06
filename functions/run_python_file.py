@@ -20,3 +20,8 @@ def run_python_file(working_directory: str, file_path: str, args: list[str] | No
     # is file extension python
     if not file_path.endswith("py"):
         return f"Error: \"{file_path}\" is not a Python file"
+    
+    # create command
+    command = ["Python", file_path_absolute]
+    command.extend(args)
+
