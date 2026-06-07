@@ -1,6 +1,6 @@
 
 import os
-
+import subprocess
 
 def run_python_file(working_directory: str, file_path: str, args: list[str] | None = None) -> str:
     working_directory_absolute = os.path.abspath(working_directory)
@@ -24,4 +24,12 @@ def run_python_file(working_directory: str, file_path: str, args: list[str] | No
     # create command
     command = ["Python", file_path_absolute]
     command.extend(args)
+    
+    # subprocess
+    status = subprocess.run(cwd=working_directory_absolute, text=True, capture_output=True, timeout=30)
+    
+    # validate status
+    if status.returncode != 0:
+        return f"Process exited with code {status.returncode}"
+
 
