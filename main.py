@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from google import genai
 import argparse
 from google.genai import types
+from prompts import system_prompt
 
 def main():
     #print("Hello from ai-agent!")
@@ -28,7 +29,7 @@ def main():
     messages: list[types.Content] = [
         types.Content(role="user", parts=[types.Part(text=args.prompt)])
     ]
-    response = client.models.generate_content(model="gemini-2.5-flash", contents=messages)
+    response = client.models.generate_content(model="gemini-2.5-flash", contents=messages, config=types.GenerateContentConfig(system_instruction=system_prompt))
     if response.usage_metadata is None:
         raise RuntimeError("metadata not found")
     
