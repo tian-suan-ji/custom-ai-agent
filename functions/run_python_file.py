@@ -31,5 +31,8 @@ def run_python_file(working_directory: str, file_path: str, args: list[str] | No
     # validate status
     if status.returncode != 0:
         return f"Process exited with code {status.returncode}"
-
+    elif status.stdout is None and status.stderr is None:
+        return "no output produced"
+    else:
+        return f"STDOUT: {status.stdout} STDERR: {status.stderr}"
 
