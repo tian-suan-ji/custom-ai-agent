@@ -2,14 +2,20 @@
 import os
 from google.genai import types
 
-
+# determine the available function
 schema_get_files_info = types.FunctionDeclaration(
+    # describes the function and its purpose
     name="get_files_info",
     description="lists files in a specified directory relative to the working directory, providing file size and directory status",
     parameters=types.Schema(
+        # describes function type and its acceptable argument types
         type=types.Type.OBJECT,
         properties={
+            # describes function parameters in a hashmap
+            # key is parameter name
+            # value is a typees.Schema function call of key's expected value type
             "directory": types.Schema(
+                # describe type of expected type and its purpose
                 type=types.Type.STRING,
                 description="path to list files from relative to the working directory (default is the working directory itself)",
             ),
