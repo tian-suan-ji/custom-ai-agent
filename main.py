@@ -5,7 +5,7 @@ from google import genai
 import argparse
 from google.genai import types
 from prompts import system_prompt
-from functions.call_function import available_functions
+from call_function import available_functions
 
 
 def main():
@@ -39,9 +39,17 @@ def main():
         print(f"User prompt: {args.prompt}")
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-        print(response.text)
+        if response.function_calls is not None:
+            for function in response.function_calls:
+                print(f"Calling function: {function.naame}:({function.args})")
+        else:
+            print(response.text)
     else:
-        print(response.text)
+        if response.function_calls is not None:
+            for function in response.function_calls:
+                print(f"Calling function: {function.name}({function.args})")
+        else:
+            print(response.text)
 
 
 if __name__ == "__main__":
