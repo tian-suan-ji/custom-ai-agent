@@ -29,4 +29,13 @@ def call_function(
     # get function_name
     function_name = f"{function_call.name}"
     if function_name not in function_map:
-        return types.Content()
+        return types.Content(
+            role="tool",
+            parts= [
+                types.Part.from_function_response(
+                    name=function_name,
+                    response={"error": f"Unkown function: {function_name}"},
+                )
+            ],
+        )
+    
