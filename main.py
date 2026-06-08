@@ -6,6 +6,7 @@ import argparse
 from google.genai import types
 from prompts import system_prompt
 from call_function import available_functions
+from call_function import call_function
 
 
 def main():
@@ -35,13 +36,30 @@ def main():
     if response.usage_metadata is None:
         raise RuntimeError("metadata not found")
     
+    # result to any function calls
+    function_call_result = call_function
+    
+    
+    #validate function_call_result
+    if function_call_result.parts == []:
+        raise Exception()
+    # more checks
+    if function_call_result.parts[0].function_response is None:
+        raise Exception()
+    # even more checks
+    if function_call_result.parts[0].function_response.response is None:
+        raise Exception()
+    
+    # function results
+    function_results = [function_call_result.parts[0],]
+    
     if args.verbose:
         print(f"User prompt: {args.prompt}")
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
         if response.function_calls is not None:
             for function in response.function_calls:
-                print(f"Calling function: {function.naame}:({function.args})")
+                print(f"Calling function: {function.name}:({function.args})")
         else:
             print(response.text)
     else:
