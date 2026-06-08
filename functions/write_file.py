@@ -1,6 +1,25 @@
 
 import os
+from google.genai import types
 
+
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
+    description="write to a specified file, providing the revisions",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="file to be written to",
+            ),
+            "content": types.Schema(
+                type=types.Type.STRING,
+                description="the changes to be made to the file",
+            ),
+        },
+    ),
+)
 
 def write_file(working_directory: str, file_path: str, content: str) -> str:
     try:
