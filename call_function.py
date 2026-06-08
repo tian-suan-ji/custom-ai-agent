@@ -39,3 +39,6 @@ def call_function(
             ],
         )
     
+    # ensure working directory is set
+    args = dict(function_call.args) if function_call.args else {}
+    args["working_directory"] = "./calculator"
