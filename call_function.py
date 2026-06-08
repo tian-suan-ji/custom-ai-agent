@@ -42,3 +42,15 @@ def call_function(
     # ensure working directory is set
     args = dict(function_call.args) if function_call.args else {}
     args["working_directory"] = "./calculator"
+    
+    # call function
+    function_result = function_map[function_name](**args)
+    return types.Content(
+        role="tool",
+        paarts= [
+            types.Part.from_function_response(
+                name=function_name,
+                response={"result": function_result},
+            )
+        ],
+    )
