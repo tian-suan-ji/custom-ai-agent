@@ -4,6 +4,7 @@ from functions.get_files_info import schema_get_files_info
 from functions.get_file_content import schema_get_file_content
 from functions.run_python_file import schema_run_python_file
 from functions.write_file import schema_write_file
+from collections.abc import  Callable
 
 
 available_functions = types.Tool(
@@ -14,4 +15,18 @@ def call_function(
         function_call: types.FunctionCall,
         verbose: bool = False
 ) -> types.Content:
-    pass
+    
+    if verbose:
+        print(f"Calling function: {function_call.__name__}({function_call.args})")
+    print(f"Calling function: {function_call.name}")
+    # linking functions
+    function_map: dict[str, Callable[..., str]] = {
+        "get_file_content": get_file_content,
+        "get_files_info": get_files_info,
+        "run_python_file": run_python_file,
+        "write_file": write_file,
+    }
+    # get function_name
+    function_name = f"{function_call.name}"
+    if function_name not in function_map:
+        return types.Content()
