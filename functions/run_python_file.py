@@ -9,6 +9,7 @@ schema_run_python_file = types.FunctionDeclaration(
     description="run a python file and any special given arguments within the working directory",
     parameters=types.Schema(
         type=types.Type.OBJECT,
+        required=["file_path"],
         properties={
             "file_path": types.Schema(
                 type=types.Type.STRING,

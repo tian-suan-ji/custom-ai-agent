@@ -8,6 +8,7 @@ schema_write_file = types.FunctionDeclaration(
     description="write to a specified file, providing the revisions",
     parameters=types.Schema(
         type=types.Type.OBJECT,
+        required=["file_path", "content"],
         properties={
             "file_path": types.Schema(
                 type=types.Type.STRING,
