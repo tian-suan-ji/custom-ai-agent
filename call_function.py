@@ -5,7 +5,10 @@ from functions.get_file_content import schema_get_file_content
 from functions.run_python_file import schema_run_python_file
 from functions.write_file import schema_write_file
 from collections.abc import  Callable
-
+from functions.get_files_info import get_files_info
+from functions.get_file_content import get_file_content
+from functions.run_python_file import run_python_file
+from functions.write_file import write_file
 
 available_functions = types.Tool(
     function_declarations=[schema_get_files_info, schema_get_file_content, schema_run_python_file, schema_write_file],
@@ -17,8 +20,10 @@ def call_function(
 ) -> types.Content:
     
     if verbose:
-        print(f"Calling function: {function_call.__name__}({function_call.args})")
-    print(f"Calling function: {function_call.name}")
+        print(f"Calling function: {function_call.name}({function_call.args})")
+        
+    else:
+        print(f"Calling function: {function_call.name}")
     # linking functions
     function_map: dict[str, Callable[..., str]] = {
         "get_file_content": get_file_content,
@@ -34,7 +39,7 @@ def call_function(
             parts= [
                 types.Part.from_function_response(
                     name=function_name,
-                    response={"error": f"Unkown function: {function_name}"},
+                    response={"error": f"Unknown function: {function_name}"},
                 )
             ],
         )
@@ -47,7 +52,7 @@ def call_function(
     function_result = function_map[function_name](**args)
     return types.Content(
         role="tool",
-        paarts= [
+        parts= [
             types.Part.from_function_response(
                 name=function_name,
                 response={"result": function_result},
