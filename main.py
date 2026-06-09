@@ -35,43 +35,51 @@ def main():
         types.Content(role="user", parts=[types.Part(text=args.prompt)])
     ]
     
-    # model call
-    response = client.models.generate_content(model="gemini-2.5-flash", contents=messages, config=types.GenerateContentConfig(tools=[available_functions], system_instruction=system_prompt))
     
-    if response.usage_metadata is None:
-        raise RuntimeError("metadata not found")
-    
-    function_call_results = []
+    for num_of_requests in range(20):
 
-    if args.verbose:
-        print(f"User prompt: {args.prompt}")
-        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-        print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-    
-    # check agent response to see if any functions were called
-    if response.function_calls is not None:
-        for function_call in response.function_calls:
-            function_call_result = call_function(function_call, args.verbose)
+        # model call
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=messages, config=types.GenerateContentConfig(tools=[available_functions], system_instruction=system_prompt))
+        
+        if response.usage_metadata is None:
+            raise RuntimeError("metadata not found")
+        
+        # add agent response based on  prompt to messages
+        if len(response.candidates) > 0:
+            for candidate in response.candidates:
+                messages.append(candidate)
+        
+        function_call_results = []
+
+        if args.verbose:
+            print(f"User prompt: {args.prompt}")
+            print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+            print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+        
+        # check agent response to see if any functions were called
+        if response.function_calls is not None:
+            for function_call in response.function_calls:
+                function_call_result = call_function(function_call, args.verbose)
+                
+                # validate items in container
+                if function_call_result.parts == [] or function_call_result.parts is None:
+                    raise Exception()
             
-            # validate items in container
-            if function_call_result.parts == [] or function_call_result.parts is None:
-                raise Exception()
-        
-        # validate item object type
-            if function_call_result.parts[0].function_response is None:
-                raise Exception()
-        
-        # chech the value/result of the item
-            if function_call_result.parts[0].function_response.response is None:
-                raise Exception()
-        
-        # function results
-            function_call_results.append(function_call_result.parts[0])
+            # validate item object type
+                if function_call_result.parts[0].function_response is None:
+                    raise Exception()
             
-            if args.verbose:
-                print(f"-> {function_call_result.parts[0].function_response.response}")
-    else:
-        print(response.text)
+            # chech the value/result of the item
+                if function_call_result.parts[0].function_response.response is None:
+                    raise Exception()
+            
+            # function results
+                function_call_results.append(function_call_result.parts[0])
+                
+                if args.verbose:
+                    print(f"-> {function_call_result.parts[0].function_response.response}")
+        else:
+            print(response.text)
 
 
 if __name__ == "__main__":
