@@ -36,38 +36,33 @@ def main():
     if response.usage_metadata is None:
         raise RuntimeError("metadata not found")
     
-    # result to any function calls
-    function_call_result = call_function
-    
-    
-    #validate function_call_result
-    if function_call_result.parts == []:
-        raise Exception()
-    # more checks
-    if function_call_result.parts[0].function_response is None:
-        raise Exception()
-    # even more checks
-    if function_call_result.parts[0].function_response.response is None:
-        raise Exception()
-    
-    # function results
-    function_results = [function_call_result.parts[0],]
-    
+    function_call_results = []
+
     if args.verbose:
         print(f"User prompt: {args.prompt}")
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-        if response.function_calls is not None:
-            for function in response.function_calls:
-                print(f"Calling function: {function.name}:({function.args})")
-        else:
-            print(response.text)
+    
+    if response.function_calls is not None:
+        for function_call in response.function_calls:
+            function_call_result = call_function(function_call, args.verbose)
+            
+            if function_call_result.parts == [] or function_call_result.parts is None:
+                raise Exception()
+        # more checks
+            if function_call_result.parts[0].function_response is None:
+                raise Exception()
+        # even more checks
+            if function_call_result.parts[0].function_response.response is None:
+                raise Exception()
+        
+        # function results
+            function_call_results.append(function_call_result.parts[0])
+            
+            if args.verbos:
+                print(f"-> {function_call_result.parts[0].function_response.response}")
     else:
-        if response.function_calls is not None:
-            for function in response.function_calls:
-                print(f"Calling function: {function.name}({function.args})")
-        else:
-            print(response.text)
+        print(response.text)
 
 
 if __name__ == "__main__":
