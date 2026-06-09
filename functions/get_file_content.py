@@ -25,11 +25,14 @@ def get_file_content(working_directory: str, file_path: str) -> str:
         target_file = os.path.normpath(full_file_path)
         
         valid_common_directory = os.path.commonpath([working_directory_absolute, target_file])
+        # validate if file is inside working directory
         if valid_common_directory != working_directory_absolute:
             return f"Error: Cannot read \"{file_path}\" as it is outside the permitted directory"
         
+        # validate if target_file is indeed a file
         if not os.path.isfile(target_file):
             return f"Error: File not found or is not a regular file {file_path}"
+        
         # read file
         with open(target_file, 'r', encoding="UTF-8") as f:
             content = f.read(10_000)
