@@ -47,19 +47,22 @@ def main():
         for function_call in response.function_calls:
             function_call_result = call_function(function_call, args.verbose)
             
+            # validate items in container
             if function_call_result.parts == [] or function_call_result.parts is None:
                 raise Exception()
-        # more checks
+        
+        # validate item object type
             if function_call_result.parts[0].function_response is None:
                 raise Exception()
-        # even more checks
+        
+        # chech the value/result of the item
             if function_call_result.parts[0].function_response.response is None:
                 raise Exception()
         
         # function results
             function_call_results.append(function_call_result.parts[0])
             
-            if args.verbos:
+            if args.verbose:
                 print(f"-> {function_call_result.parts[0].function_response.response}")
     else:
         print(response.text)

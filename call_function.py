@@ -23,7 +23,7 @@ def call_function(
         print(f"Calling function: {function_call.name}({function_call.args})")
         
     else:
-        print(f"Calling function: {function_call.name}")
+        print(f" - Calling function: {function_call.name}")
     # linking functions
     function_map: dict[str, Callable[..., str]] = {
         "get_file_content": get_file_content,
@@ -32,7 +32,7 @@ def call_function(
         "write_file": write_file,
     }
     # get function_name
-    function_name = f"{function_call.name}"
+    function_name = function_call.name if function_call.name is not None else ""
     if function_name not in function_map:
         return types.Content(
             role="tool",
