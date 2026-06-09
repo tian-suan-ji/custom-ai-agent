@@ -78,6 +78,14 @@ def main():
                 
                 if args.verbose:
                     print(f"-> {function_call_result.parts[0].function_response.response}")
+                
+                # provide message history the tool for which the agent called
+                messages.append(
+                    types.Content(
+                        role="user",
+                        parts=function_call_results
+                    )
+                )
         else:
             print(response.text)
 
