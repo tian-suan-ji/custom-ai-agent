@@ -1,5 +1,6 @@
 
 import os
+import sys
 from dotenv import load_dotenv
 from google import genai
 import argparse
@@ -28,6 +29,7 @@ def main():
         raise RuntimeError("api key not found")
     
     # chat bot interaction
+    
     client = genai.Client(api_key=api_key)
 
 # chat history container
@@ -36,7 +38,10 @@ def main():
     ]
     
     
+    
     for num_of_requests in range(20):
+        # tools used in message history
+        function_call_results = []
 
         # model call
         response = client.models.generate_content(model="gemini-2.5-flash", contents=messages, config=types.GenerateContentConfig(tools=[available_functions], system_instruction=system_prompt))
@@ -47,9 +52,7 @@ def main():
         # add agent response based on  prompt to messages
         if len(response.candidates) > 0:
             for candidate in response.candidates:
-                messages.append(candidate)
-        
-        function_call_results = []
+                messages.append(candidate.content)
 
         if args.verbose:
             print(f"User prompt: {args.prompt}")
@@ -80,7 +83,7 @@ def main():
                     print(f"-> {function_call_result.parts[0].function_response.response}")
                 
                 # provide message history the tool for which the agent called
-                messages.append(
+            messages.append(
                     types.Content(
                         role="user",
                         parts=function_call_results
@@ -88,7 +91,10 @@ def main():
                 )
         else:
             print(response.text)
+            return
 
+    print("Error: Response took too long to generate")
+    sys.exit(1)
 
 if __name__ == "__main__":
     main()
