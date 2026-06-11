@@ -51,9 +51,9 @@ def get_files_info(working_directory: str, directory: str = ".") -> str:
                     directory_contents += "\n"
         except Exception as e:
             return f"Error: {e}"
-        print(directory_contents)
+        
         if os.path.exists(target_directory):
-            return f"Success: \"{directory}\" is within the working directory"
+            return directory_contents
     
     except Exception as e:
         return f"Error: {e}"

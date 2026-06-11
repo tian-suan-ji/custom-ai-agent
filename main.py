@@ -84,11 +84,11 @@ def main():
                 
                 # provide message history the tool for which the agent called
             messages.append(
-                    types.Content(
-                        role="user",
-                        parts=function_call_results
-                    )
+                types.Content(
+                    role="user",
+                    parts=function_call_results
                 )
+            )
         else:
             print(response.text)
             return
