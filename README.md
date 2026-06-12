@@ -1,9 +1,15 @@
 # Custom AI Agent
 
 ## Overview
-A command line coding A.I. agent. 
 
-A coding A.I. agent using the Gemini 2.5-flash model within the terminal. The agent can read files on disc, write to existing or new files, and run files on disc.
+Custom AI Agent is a command-line coding assistant powered by Google's Gemini 2.5 Flash model.
+
+The agent can:
+- Read files from disk
+- Create new files
+- Modify existing files
+- Execute programs and scripts
+- Interact through natural language prompts directly from the terminal
 
 ## Installation
 
@@ -18,25 +24,38 @@ Install uv:
 pip install uv
 ```
 
-### Clone the repository
+### Clone The Repository
 
 ```bash
 git clone https://github.com/tian-suan-ji/custom-ai-agent.git
 cd custom-ai-agent
 ```
 
-### Install dependencies
+### Install Dependencies
 
 ```bash
 uv sync
 ```
+## Configuration
+
+This project requires a Gemini API key to function.
+Create a `.env` file in the project's root directory.
+
+GEMINI_API_KEY="Your API Key Here"
+
+You can obtain a Gemini API key from Google AI Studio.
 
 ## Usage
 
-Run the program:
+Run the agent in the terminal:
+```bash
+uv run main.py "<your prompt>"
+```
+
+### Example
 
 ```bash
-uv run main.py "<communications with agent>"
+uv run main.py "Create a Python script that prints Hello World"
 ```
 
 ## License
